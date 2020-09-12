@@ -1,9 +1,9 @@
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');//responsavel por ler osarquivos css
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');//responsavel por ler osarquivos css
 
 //visivel fora do arquivo
 module.exports = {
-  entry: './ex/index.js',
+  entry: './ex-commonJS/index.js',
   output: {
     path: __dirname + '/public',
     filename: './bundle.js'
@@ -13,12 +13,12 @@ module.exports = {
     contentBase: './public'
   },
   plugins: [
-    new ExtractTextPlugin('app.css')
+    new MiniCssExtractPlugin()
   ],
   module: {
     //é quem vai carregar os arquivos
-    loaders: [{
-      test: /.js?$/,
+    rules: [{
+      test: /\.js?$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
       query: {
@@ -27,7 +27,7 @@ module.exports = {
       }
     }, {
       test: /\.css$/,
-      loader: ExtractTextPlugin.extract("css-loader")
+      use: [MiniCssExtractPlugin.loader, 'css-loader']
     }]
   }
 }
